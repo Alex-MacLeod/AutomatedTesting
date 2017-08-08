@@ -60,7 +60,8 @@ public class TestDemositeLogin {
 
         webdriver.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/form/div/center/table/tbody/tr/td[1]/table/tbody/tr[3]/td[2]/p/input")).click(); //try login
 
-        assertEquals("Login was unsuccessful", "**Successful Login**", webdriver.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/big/blockquote/blockquote/font/center/b")).getText());
+        assertEquals("Login was unsuccessful", "**Successful Login**", webdriver.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/big/blockquote/" +
+                "blockquote/font/center/b")).getText());   //check for login successful message
     }
 
 
