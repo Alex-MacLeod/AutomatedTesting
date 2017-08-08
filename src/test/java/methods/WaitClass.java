@@ -1,3 +1,5 @@
+package methods;
+
 import com.google.common.base.Function;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -9,8 +11,6 @@ import org.openqa.selenium.support.ui.Wait;
 import java.util.concurrent.TimeUnit;
 
 public class WaitClass {
-
-    private WebDriver wD;
 
     public void waitToLoad(WebDriver wD, final String css) {
         Wait<WebDriver> wait = new FluentWait<WebDriver>(wD)
