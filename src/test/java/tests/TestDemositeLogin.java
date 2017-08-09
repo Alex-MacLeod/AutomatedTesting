@@ -1,12 +1,11 @@
 package tests;
 
-import org.junit.runner.RunWith;
 import tools.SpreadSheetReader;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
-import methods.CreateUser;
-import methods.Login;
-import methods.Navigate;
+import methodsDemosite.CreateUser;
+import methodsDemosite.Login;
+import methodsDemosite.Navigate;
 import org.junit.*;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -24,6 +23,7 @@ import java.util.List;
 public class TestDemositeLogin {
 
     private static WebDriver cD;
+
     private Navigate navi;
     private CreateUser user;
     private Login login;
@@ -33,7 +33,7 @@ public class TestDemositeLogin {
 
     private static ExtentReports report;
     private ExtentTest test;
-    private static String reportFilePath = "report.html";
+    private static String reportFilePath = "DemositeLoginReport.html";
 
     //private int testCount = 1;
 
@@ -55,7 +55,7 @@ public class TestDemositeLogin {
         reader = new SpreadSheetReader();
 
         cD = new ChromeDriver();
-        navi = PageFactory.initElements(cD,Navigate.class);
+        navi = PageFactory.initElements(cD, methodsDemosite.Navigate.class);
         login = PageFactory.initElements(cD, Login.class);
         user = PageFactory.initElements(cD,CreateUser.class);
 
@@ -100,7 +100,7 @@ public class TestDemositeLogin {
         login.login(cD, username, password);    //log in
         test.log(Status.INFO, "Logged in as user");
 
-        sc.take(cD, "screenshot");
+        sc.take(cD, "DemositeLoginScreenshot");
         test.log(Status.INFO, "Screenshot taken");
 
         List<String> outputDataRow = reader.readRow(2, "outputData");

@@ -1,9 +1,9 @@
-package methods;
+package methodsDemosite;
 
-import methods.WaitClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import tools.WaitClass;
 
 public class Navigate {
 
