@@ -9,12 +9,10 @@ public class Navigate {
 
     private WaitClass wait = new WaitClass();
 
-    @FindBy(css = "body > div > center > table > tbody > tr:nth-child(2) > td > div > center > table > tbody > tr > " +
-            "td:nth-child(2) > p > small > a:nth-child(6)")
+    @FindBy(css = "tbody > tr > td:nth-child(2) > p > small > a:nth-child(6)")
     private WebElement addUserPage;
 
-    @FindBy(css = "body > div > center > table > tbody > tr:nth-child(2) > td > div > center > table > tbody > tr > " +
-            "td:nth-child(2) > p > small > a:nth-child(7)")
+    @FindBy(css = "td:nth-child(2) > small > a")
     private WebElement loginPage;
 
     public void homePage(WebDriver wD) {
@@ -22,14 +20,12 @@ public class Navigate {
     }
 
     public void addUserPage(WebDriver wD) {
-        wait.waitToLoad(wD, "body > div > center > table > tbody > tr:nth-child(2) > td > div > center > table > " +
-                "tbody > tr > td:nth-child(2) > p > small > a:nth-child(6)");
+        wait.waitToLoad(wD, "tbody > tr > td:nth-child(2) > p > small > a:nth-child(6)");
         addUserPage.click();
     }
 
     public void loginPage(WebDriver wD) {
-        wait.waitToLoad(wD, "body > div > center > table > tbody > tr:nth-child(2) > td > div > center > table > " +
-                "tbody > tr > td:nth-child(2) > p > small > a:nth-child(7)");
+        wait.waitToLoad(wD, "td:nth-child(2) > small > a");
         loginPage.click();
     }
 }

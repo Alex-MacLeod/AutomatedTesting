@@ -81,7 +81,7 @@ public class TestDemositeLogin {
         sc.take(cD, "screenshot");
         test.log(Status.INFO, "Screenshot taken");
 
-        String text = cD.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/big/blockquote/blockquote/font/center/b")).getText();
+        String text = cD.findElement(By.cssSelector("blockquote > font > center > b")).getText();
         assertEquals("Login was unsuccessful", "**Successful Login**", text);   //check for login successful message
 
         if ("**Successful Login**".equals(text)) {
