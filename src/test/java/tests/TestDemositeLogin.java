@@ -1,5 +1,7 @@
 package tests;
 
+import org.junit.runner.RunWith;
+import tools.SpreadSheetReader;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import methods.CreateUser;
@@ -15,36 +17,42 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
-import report.ScreenShot;
+import tools.ScreenShot;
+
+import java.util.List;
 
 public class TestDemositeLogin {
 
-    private WebDriver cD;
+    private static WebDriver cD;
     private Navigate navi;
     private CreateUser user;
     private Login login;
 
     private ScreenShot sc;
+    private SpreadSheetReader reader;
 
-    private ExtentReports report;
+    private static ExtentReports report;
     private ExtentTest test;
-    private String reportFilePath = "report.html";
+    private static String reportFilePath = "report.html";
+
+    private int testCount = 1;
 
     @BeforeClass
-    public static void init(){
-
-    }
-
-    @Before
-    public void before() {
+    public static void beforeClass(){
         report = new ExtentReports();
         ExtentHtmlReporter extentHtmlReporter = new ExtentHtmlReporter(reportFilePath);
         extentHtmlReporter.config().setReportName("Demosite Login Report");
         extentHtmlReporter.config().setDocumentTitle("DemositeLoginReport");
         report.attachReporter(extentHtmlReporter);
-        test = report.createTest("loginSuccess");
+    }
+
+    @Before
+    public void before() {
+
+        test = report.createTest("loginSuccess" + testCount);
 
         sc = new ScreenShot();
+        reader = new SpreadSheetReader(System.getProperty("user.dir") + "/Documents\\Automated Testing (Week 5)\\TestData.xlsx");
 
         cD = new ChromeDriver();
         navi = PageFactory.initElements(cD,Navigate.class);
@@ -55,37 +63,54 @@ public class TestDemositeLogin {
     }
 
     @After
-    public void a() {
+    public void after() {
+       // if (testCount<11) {
+       //     testCount++;
+       // }
+       // cD.quit();
+    }
+
+    @AfterClass
+    public static void afterClass() {
         cD.quit();
         report.flush();
     }
 
 
+
     @Test
-    public void testLogin() {
+    public void testLogin1() {
+        int randomRow = (int) Math.ceil(2 + Math.random()*9);
+        List<String> inputDataRow = reader.readRow(randomRow, "inputData");
+        String username = inputDataRow.get(2);
+        String password = inputDataRow.get(3);
+
         navi.homePage(cD);   //navigate to site
         test.log(Status.INFO, "Navigated to site");
 
         navi.addUserPage(cD); //go to Add User page
         test.log(Status.INFO, "Navigated to Add User page");
 
-        user.createUser(cD, "amacleod", "Pa$$w0rd");    //create user
+        user.createUser(cD, username, password);    //create user
         test.log(Status.INFO, "Created user");
 
         navi.loginPage(cD); //go to Login page
         test.log(Status.INFO, "Navigated to Login page");
 
-        login.login(cD, "amacleod", "Pa$$w0rd");    //log in
+        login.login(cD, username, password);    //log in
         test.log(Status.INFO, "Logged in as user");
 
         sc.take(cD, "screenshot");
         test.log(Status.INFO, "Screenshot taken");
 
-        String text = cD.findElement(By.cssSelector("blockquote > font > center > b")).getText();
-        assertEquals("Login was unsuccessful", "**Successful Login**", text);   //check for login successful message
+        List<String> outputDataRow = reader.readRow(2, "outputData");
+        String expectedText = outputDataRow.get(2);
 
-        if ("**Successful Login**".equals(text)) {
-            test.log(Status.PASS, "Successful Login");
+        String actualText = cD.findElement(By.cssSelector("blockquote > font > center > b")).getText();
+        assertEquals("Login was unsuccessful", expectedText, actualText);   //check for login successful message
+
+        if (expectedText.equals(actualText)) {
+            test.log(Status.PASS, "Successful Login with user: " + username);
         } else {
             test.log(Status.FAIL, "Login was unsuccessful");
         }
