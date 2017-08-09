@@ -35,7 +35,7 @@ public class TestDemositeLogin {
     private ExtentTest test;
     private static String reportFilePath = "report.html";
 
-    private int testCount = 1;
+    //private int testCount = 1;
 
     @BeforeClass
     public static void beforeClass(){
@@ -49,10 +49,10 @@ public class TestDemositeLogin {
     @Before
     public void before() {
 
-        test = report.createTest("loginSuccess" + testCount);
+        test = report.createTest("loginSuccess");
 
         sc = new ScreenShot();
-        reader = new SpreadSheetReader(System.getProperty("user.dir") + "/Documents\\Automated Testing (Week 5)\\TestData.xlsx");
+        reader = new SpreadSheetReader();
 
         cD = new ChromeDriver();
         navi = PageFactory.initElements(cD,Navigate.class);

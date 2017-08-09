@@ -17,7 +17,7 @@ public class SpreadSheetReader {
 
     private Workbook workbook;
 
-    public SpreadSheetReader(String fileName){
+    public SpreadSheetReader(){
         try {
             FileInputStream excelFile = new FileInputStream(new File("C:\\Users\\Administrator\\Documents\\Automated Testing (Week 5)\\TestData.xlsx"));
             workbook = new XSSFWorkbook(excelFile);
