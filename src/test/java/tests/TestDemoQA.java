@@ -13,6 +13,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import tools.ScreenShot;
+import tools.SpreadSheetReader;
+
+import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -29,15 +32,15 @@ public class TestDemoQA {
     private Sort sort;
 
     private ScreenShot ss;
-    //private SpreadSheetReader reader;
+    private static SpreadSheetReader reader;
 
     private static ExtentReports report;
     private ExtentTest test;
-    private static String reportFilePath = "DemoQAReport.html";
 
     @BeforeClass
     public static void beforeClass(){
         report = new ExtentReports();
+        String reportFilePath = "DemoQAReport.html";
         ExtentHtmlReporter extentHtmlReporter = new ExtentHtmlReporter(reportFilePath);
         extentHtmlReporter.config().setReportName("DemoQA Report");
         extentHtmlReporter.config().setDocumentTitle("DemoQAReport");
@@ -45,19 +48,20 @@ public class TestDemoQA {
 
         cD = new ChromeDriver();
         cD.manage().window().maximize();    //maximise Chrome
+
+        reader = new SpreadSheetReader();
     }
 
     @Before
     public void before() {
 
-        test = report.createTest("DemoQA Success");
+        test = report.createTest("DemoQA Test");
 
         ss = new ScreenShot();
-        //reader = new SpreadSheetReader();
 
         mouse = new Actions(cD);
 
-        navi = PageFactory.initElements(cD, methodsDemoQA.Navigate.class);
+        navi = PageFactory.initElements(cD, Navigate.class);
         fill = PageFactory.initElements(cD, FillForm.class);
         drag = PageFactory.initElements(cD, Drag.class);
         drop = PageFactory.initElements(cD, Drop.class);
@@ -75,8 +79,13 @@ public class TestDemoQA {
         report.flush();
     }
 
-    @Ignore
+    @Test
     public void testRegistration() {
+
+        List<String> inputDataRow = reader.readRow(6 , "RegistrationDetails");
+        String username = inputDataRow.get(2);
+        String password = inputDataRow.get(3);
+        String email = inputDataRow.get(4);
 
         navi.homePage(cD);   //navigate to site
         test.log(Status.INFO, "Navigated to site");
@@ -94,16 +103,14 @@ public class TestDemoQA {
         fill.selectDetails(cD, "United States", "7", "4", "1976");
         test.log(Status.INFO, "Added personal details");
 
-        fill.enterContactDetails("1234567891", "name@email.com");
+        fill.enterContactDetails("1234567891", email);
         test.log(Status.INFO, "Added contact details");
-        //TODO: can change email
 
-        fill.newUser("cdanger", "carlos100%s3xy");
+        fill.newUser(username, password);
         test.log(Status.INFO, "Added new user");
 
-        //fill.addProfilePic(mouse,"profile.jpg");
-        //test.log(Status.INFO, "Added profile picture");
-        //TODO: get addProfilePic to successfully choose picture
+        fill.addProfilePic(mouse,"profile.jpg");
+        test.log(Status.INFO, "Added profile picture");
 
         cD.findElement(By.cssSelector("#pie_register > li:nth-child(14) > div > input[type=\"submit\"]")).click();
         test.log(Status.INFO, "Submitted form");
@@ -122,7 +129,7 @@ public class TestDemoQA {
         }
     }
 
-    @Ignore
+    @Test
     public void testDraggable() {
         navi.homePage(cD);   //navigate to site
         test.log(Status.INFO, "Navigated to site");
@@ -151,7 +158,7 @@ public class TestDemoQA {
         }
     }
 
-    @Ignore
+    @Test
     public void testDroppable() {
         navi.homePage(cD);   //navigate to site
         test.log(Status.INFO, "Navigated to site");
@@ -194,10 +201,10 @@ public class TestDemoQA {
         ss.take(cD, "DemoQASortScreenshot");
         test.log(Status.INFO, "Screenshot taken");
 
-        WebElement topItem = cD.findElement(By.cssSelector("#sortable > li:nth-child(1)"));
-        assertEquals("Sort failed","Item 7", topItem.getText());
+        WebElement firstItem = cD.findElement(By.cssSelector("#sortable_grid > li:nth-child(1)"));
+        assertEquals("Sort failed","12", firstItem.getText());
 
-        if ("Item 7".equals(topItem.getText())) {
+        if ("12".equals(firstItem.getText())) {
             test.log(Status.PASS, "Items resorted");
         } else {
             test.log(Status.FAIL, "Sort failed");

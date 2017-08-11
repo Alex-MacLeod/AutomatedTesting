@@ -33,13 +33,11 @@ public class TestDemositeLogin {
 
     private static ExtentReports report;
     private ExtentTest test;
-    private static String reportFilePath = "DemositeLoginReport.html";
-
-    //private int testCount = 1;
 
     @BeforeClass
     public static void beforeClass(){
         report = new ExtentReports();
+        String reportFilePath = "DemositeLoginReport.html";
         ExtentHtmlReporter extentHtmlReporter = new ExtentHtmlReporter(reportFilePath);
         extentHtmlReporter.config().setReportName("Demosite Login Report");
         extentHtmlReporter.config().setDocumentTitle("DemositeLoginReport");
@@ -55,19 +53,11 @@ public class TestDemositeLogin {
         reader = new SpreadSheetReader();
 
         cD = new ChromeDriver();
-        navi = PageFactory.initElements(cD, methodsDemosite.Navigate.class);
+        navi = PageFactory.initElements(cD, Navigate.class);
         login = PageFactory.initElements(cD, Login.class);
         user = PageFactory.initElements(cD,CreateUser.class);
 
         cD.manage().window().maximize();    //maximise Chrome
-    }
-
-    @After
-    public void after() {
-       // if (testCount<11) {
-       //     testCount++;
-       // }
-       // cD.quit();
     }
 
     @AfterClass
@@ -75,8 +65,6 @@ public class TestDemositeLogin {
         cD.quit();
         report.flush();
     }
-
-
 
     @Test
     public void testLogin1() {

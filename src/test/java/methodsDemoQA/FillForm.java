@@ -77,9 +77,7 @@ public class FillForm {
     }
 
     public void addProfilePic(Actions action, String filename) {
-        profilePicInput.click();
-
-        profilePicInput.sendKeys(Keys.ENTER);
+        profilePicInput.sendKeys("C:\\Users\\Administrator\\Pictures\\profile.jpg");
     }
 
     private void enterUsername(String username) {

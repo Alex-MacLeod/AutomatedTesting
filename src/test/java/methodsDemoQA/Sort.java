@@ -37,26 +37,25 @@ public class Sort {
     public void reverseSortListItems(WebDriver wD, Actions action) {
         wait.waitToLoad(wD, "#sortable > li:nth-child(1)");
         int y=200;
-        while (y>0) {
+        while (y>1) {
             dragListItem(action, y);
             y=y-33;
             pause();
         }
-
     }
 
     public void reverseSortGridItems(WebDriver wD, Actions action) {
         wait.waitToLoad(wD, "#sortable_grid > li:nth-child(1)");
-        int x=300;
-        int y=200;
+        int y=195;
         while (y>0) {
-            dragListItem(action, y);
-            y=y-66;
+            int x=310;
             while (x>0) {
-                dragListItem(action, y);
-                x=x-75;
+                dragGridItem(action, x, y);
+                x=x-100;
+                pause();
             }
-            pause();
+            y=y-97;
         }
+
     }
 }
