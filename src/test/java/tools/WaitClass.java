@@ -1,4 +1,4 @@
-package methods;
+package tools;
 
 import com.google.common.base.Function;
 import org.openqa.selenium.By;
@@ -18,7 +18,7 @@ public class WaitClass {
                 .pollingEvery(500, TimeUnit.MILLISECONDS)
                 .ignoring(NoSuchElementException.class);
 
-        WebElement w = wait.until(new Function<WebDriver, WebElement>() {
+        wait.until(new Function<WebDriver, WebElement>() {
             public WebElement apply(WebDriver webDriver) {
                 return webDriver.findElement(By.cssSelector(css));
             }
